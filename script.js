@@ -1,18 +1,30 @@
-async function runScan() {
-  const url = document.getElementById("urlInput").value;
-  const resultsBox = document.getElementById("results");
-  resultsBox.textContent = "Scanning " + url + " ...";
+async function scanWebsite() {
+    const url = document.getElementById("urlInput").value;
+    if (!url) {
+        alert("Please enter a URL");
+        return;
+    }
 
-  try {
-    const response = await fetch("https://YOUR-BACKEND-URL.onrender.com/scan", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url })
-    });
+    document.getElementById("results").innerHTML = "Scanning...";
 
-    const data = await response.json();
-    resultsBox.textContent = JSON.stringify(data, null, 2);
-  } catch (err) {
-    resultsBox.textContent = "Error: " + err;
-  }
+    try {
+        const response = await fetch("https://sesame-scanner-backend.onrender.com/scan", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: url })
+        });
+
+        const data = await response.json();
+
+        let output = "<h3>Scan Results</h3><ul>";
+        for (const [issue, detail] of Object.entries(data.issues)) {
+            output += `<li><strong>${issue}:</strong> ${detail}</li>`;
+        }
+        output += "</ul>";
+
+        document.getElementById("results").innerHTML = output;
+
+    } catch (error) {
+        document.getElementById("results").innerHTML = "Error: " + error.message;
+    }
 }
