@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sesame Scanner</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sesame Scanner (Lite)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Sesame Scanner</h1>
-    <p>Enter a URL to scan:</p>
-    <input type="text" id="urlInput" placeholder="https://example.com">
-    <button onclick="runScan()">Scan</button>
-    <pre id="results"></pre>
+  <div class="wrap">
+    <h1>🔍 Sesame Scanner</h1>
+    <p>Quick scan (shows up to 4 issues). Contact Sesame for full report.</p>
+
+    <div class="card">
+      <input id="urlInput" placeholder="https://example.com" />
+      <button id="scanBtn">Scan</button>
+      <div id="status" class="dim"></div>
+      <div id="results"></div>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+
+
