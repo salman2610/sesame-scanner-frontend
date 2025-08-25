@@ -1,11 +1,15 @@
-async function scanWebsite() {
-    const url = document.getElementById("urlInput").value;
+// script.js
+
+async function runScan() {
+    const url = document.getElementById("targetUrl").value;
+    const resultsDiv = document.getElementById("results");
+
     if (!url) {
-        alert("Please enter a URL");
+        resultsDiv.innerText = "⚠️ Please enter a target URL";
         return;
     }
 
-    document.getElementById("results").innerHTML = "Scanning...";
+    resultsDiv.innerText = "⏳ Running scan, please wait...";
 
     try {
         const response = await fetch("https://sesame-scanner-backend.onrender.com/scan", {
@@ -14,17 +18,14 @@ async function scanWebsite() {
             body: JSON.stringify({ url: url })
         });
 
-        const data = await response.json();
-
-        let output = "<h3>Scan Results</h3><ul>";
-        for (const [issue, detail] of Object.entries(data.issues)) {
-            output += `<li><strong>${issue}:</strong> ${detail}</li>`;
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
         }
-        output += "</ul>";
 
-        document.getElementById("results").innerHTML = output;
-
+        const data = await response.json();
+        resultsDiv.innerText = JSON.stringify(data, null, 2);
     } catch (error) {
-        document.getElementById("results").innerHTML = "Error: " + error.message;
+        resultsDiv.innerText = `❌ Error: ${error.message}`;
+        console.error(error);
     }
 }
